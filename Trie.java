@@ -52,7 +52,8 @@ public class Trie implements spell.ITrie{
             currentNode = currentNode.alphabet[loc];
         }
 
-        return currentNode;
+        if(currentNode.count > 0) return currentNode;
+        else return null;
     }
 
     @Override
@@ -143,15 +144,15 @@ public class Trie implements spell.ITrie{
         return true;
 
     }
-/*
+
     public static void main(String[] args){
        Trie trie = new Trie();
        //Trie trie2 = new Trie();
 
        trie.add("Aa");
 
-       System.out.println(trie.hashCode());
+       System.out.println(trie.find("a"));
        //System.out.println("Nodes: " + trie.getNodeCount());
     }
-*/
+
 }
