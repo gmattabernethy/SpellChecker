@@ -37,12 +37,49 @@ public class SpellCorrector implements spell.ISpellCorrector {
 
     @Override
     public String suggestSimilarWord(String inputWord) {
+        if(trie.find(inputWord) != null) return inputWord.toLowerCase();
+
+        String deleted = deletionDistance(inputWord, 1);
+        String transposed = transpositionDistance(inputWord);
+        String altered = alterationDistance(inputWord);
+        String inserted = insertionDistance(inputWord);
+
+        if()
+
         return null;
     }
 
+    private String deletionDistance(String inputWord, int distance){
+      String str = null;
+      StringBuilder builder = new StringBuilder();
+      builder.append(inputWord);
+
+      for(int i = 0; i < inputWord.length(); i++){
+        String deleted = builder.deleteCharAt(i);
+        if trie.find(deleted)
+      }
+
+      return str;
+    }
+
+    private String transpositionDistance(String inputWord){
+
+
+    }
+
+    private String alterationDistance(String inputWord){
+
+
+    }
+
+    private String insertionDistance(String inputWord){
+
+
+    }
+/*
     public static void main(String[] args){
         SpellCorrector sc = new SpellCorrector();
-        sc.useDictionary("words.txt");
-        System.out.println(sc.trie.getWordCount());
+        System.out.println(sc.suggestSimilarWord("hi"));
     }
+    */
 }

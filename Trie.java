@@ -1,4 +1,4 @@
-
+import spell.ITrie;
 
 public class Trie implements spell.ITrie{
     private Node root;
