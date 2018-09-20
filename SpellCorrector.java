@@ -42,17 +42,48 @@ public class SpellCorrector implements spell.ISpellCorrector {
     public String suggestSimilarWord(String inputWord) {
         if(trie.find(inputWord) != null) return inputWord.toLowerCase();
 
-        String deleted = deletionDistance(inputWord, 1);
-        String transposed = transpositionDistance(inputWord, 1);
-        String altered = alterationDistance(inputWord, 1);
-        String inserted = insertionDistance(inputWord, 2);
+        ArrayList<String> strings = new ArrayList<>();
 
-        //if()
+        String deleted = deletion(inputWord, 1);
+        String transposed = transposition(inputWord, 1);
+        String altered = alteration(inputWord, 1);
+        String inserted = insertion(inputWord, 1);
 
-        return inserted;
+        if(deleted != null) strings.add(deleted);
+        if(transposed != null) strings.add(transposed);
+        if(altered != null) strings.add(altered);
+        if(inserted != null) strings.add(inserted);
+
+        if(strings.size() == 0){
+            deleted = deletion(inputWord, 2);
+            transposed = transposition(inputWord, 2);
+            altered = alteration(inputWord, 2);
+            inserted = insertion(inputWord, 2);
+        }
+
+        if(deleted != null) strings.add(deleted);
+        if(transposed != null) strings.add(transposed);
+        if(altered != null) strings.add(altered);
+        if(inserted != null) strings.add(inserted);
+
+        if(strings.size() == 0) return null;
+
+        String appearsMost = "";
+        int appearances = 0;
+
+        for(String s : strings){
+                Node n = trie.find(s);
+                if(n.count > appearances) {
+                    appearances = n.count;
+                    appearsMost = s;
+                }
+                else if(n.count == appearances && appearsMost.compareTo(s) > 0) appearsMost = s;
+        }
+
+        return appearsMost;
     }
 
-    private String deletionDistance(String inputWord, int distance){
+    private String deletion(String inputWord, int distance){
         ArrayList<String> strings = new ArrayList<>();
 
         for(int i = 0; i < inputWord.length(); i++){
@@ -63,7 +94,7 @@ public class SpellCorrector implements spell.ISpellCorrector {
             if (trie.find(deleted) != null) strings.add(deleted);
 
             if(distance > 1) {
-                String str = deletionDistance(deleted, distance-1);
+                String str = deletion(deleted, distance-1);
                 if(str != null) strings.add(str);
             }
         }
@@ -74,7 +105,7 @@ public class SpellCorrector implements spell.ISpellCorrector {
         else return null;
     }
 
-    private String transpositionDistance(String inputWord, int distance){
+    private String transposition(String inputWord, int distance){
         ArrayList<String> strings = new ArrayList<>();
 
         for(int i = 0; i < inputWord.length()-1; i++){
@@ -86,7 +117,7 @@ public class SpellCorrector implements spell.ISpellCorrector {
             if (trie.find(transposed) != null) strings.add(transposed);
 
             if (distance > 1) {
-                String str = transpositionDistance(transposed, distance - 1);
+                String str = transposition(transposed, distance - 1);
                 if (str != null) strings.add(str);
             }
         }
@@ -97,7 +128,7 @@ public class SpellCorrector implements spell.ISpellCorrector {
         else return null;
     }
 
-    private String alterationDistance(String inputWord, int distance){
+    private String alteration(String inputWord, int distance){
         ArrayList<String> strings = new ArrayList<>();
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         for(int i = 0; i < inputWord.length(); i++){
@@ -110,7 +141,7 @@ public class SpellCorrector implements spell.ISpellCorrector {
                 if (trie.find(altered) != null) strings.add(altered);
 
                 if (distance > 1) {
-                    String str = alterationDistance(altered, distance - 1);
+                    String str = alteration(altered, distance - 1);
                     if (str != null) strings.add(str);
                 }
             }
@@ -122,7 +153,7 @@ public class SpellCorrector implements spell.ISpellCorrector {
         else return null;
     }
 
-    private String insertionDistance(String inputWord, int distance){
+    private String insertion(String inputWord, int distance){
         ArrayList<String> strings = new ArrayList<>();
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         for(int i = 0; i < inputWord.length()+1; i++){
@@ -134,7 +165,7 @@ public class SpellCorrector implements spell.ISpellCorrector {
                 if (trie.find(inserted) != null) strings.add(inserted);
 
                 if (distance > 1) {
-                    String str = insertionDistance(inserted, distance - 1);
+                    String str = insertion(inserted, distance - 1);
                     if (str != null) strings.add(str);
                 }
             }
@@ -149,9 +180,9 @@ public class SpellCorrector implements spell.ISpellCorrector {
     public static void main(String[] args){
         SpellCorrector sc = new SpellCorrector();
         sc.useDictionary("test.txt");
-        System.out.println(sc.suggestSimilarWord("yo"));
-        System.out.println(sc.suggestSimilarWord("yu"));
-        System.out.println(sc.suggestSimilarWord("y"));
+        System.out.println(sc.suggestSimilarWord("ginna"));
+        System.out.println(sc.suggestSimilarWord("your"));
+        System.out.println(sc.suggestSimilarWord("u"));
     }
 
 }
