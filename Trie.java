@@ -123,7 +123,7 @@ public class Trie implements spell.ITrie{
 
         Trie trie = (Trie) o;
 
-        if(trie.getNodeCount() != this.getNodeCount()) return false;
+        if(trie.getNodeCount() != this.getNodeCount() || trie.getWordCount() != this.getWordCount()) return false;
 
         return equalsTraverse(trie.root,"");
     }
