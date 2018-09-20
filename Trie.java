@@ -4,7 +4,7 @@ public class Trie implements spell.ITrie{
     private Node root;
     private int hash;
 
-    Trie(){
+    public Trie(){
         this.root = new Node(' ');
         this.hash = 0;
     }

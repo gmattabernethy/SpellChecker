@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class SpellCorrector implements spell.ISpellCorrector {
     Trie trie;
 
-    SpellCorrector(){
+    public SpellCorrector(){
         trie = new Trie();
     }
 
